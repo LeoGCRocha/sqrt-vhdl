@@ -14,7 +14,7 @@ END multiplier2;
 
 ARCHITECTURE estrutura OF multiplier2 IS
 
-COMPONENT bo is
+COMPONENT multiplier_bo is
 	generic (n:natural);
 	PORT (clk : IN STD_LOGIC;
 				-- entrada dos sionais de controle
@@ -27,7 +27,7 @@ COMPONENT bo is
 				saida : OUT STD_LOGIC_VECTOR((2*n)-1 DOWNTO 0));
 END COMPONENT;
 
-COMPONENT bc IS
+COMPONENT multiplier_bc IS
 	PORT (Reset, clk, iniciar : IN STD_LOGIC;
 			--sinal que vem do BC
 			Az, Bz, contz, A0 : IN STD_LOGIC;
@@ -41,13 +41,13 @@ SIGNAL mPH, srPH, cPH, srPL, cPL, cB, cmult, mFF, mcont, ccont, srAA, cAA, Az, B
 
 BEGIN
 
-	bloco_operativo : bo 
+	bloco_operativo : multiplier_bo 
 		generic map (n => n)
 		port map(clk=>ck, mPH=>mPH, srPH=>srPH, cPH=>cPH, srPL=>srPL, cPL=>cPL, cB=>cB, cmult=>cmult, mFF=>mFF, 
 					mcont=>mcont, ccont=>ccont, srAA=>srAA, cAA=>cAA, entA=>entA, entB=>entB, Az=>Az, Bz=>Bz, 
 					contz=>contz, A0=>A0, saida=>mult);
 	
-	bloco_controle : bc
+	bloco_controle : multiplier_bc
 		port map(Reset=>Reset, clk=>ck, iniciar=>iniciar, Az=>Az, Bz=>Bz, contz=>contz, A0=>A0, pronto=>pronto, 
 					mPH=>mPH, srPH=>srPH, cPH=>cPH, srPL=>srPL, cPL=>cPL, cB=>cB, cmult=>cmult, mFF=>mFF, 
 					mcont=>mcont, ccont=>ccont, srAA=>srAA, cAA=>cAA);

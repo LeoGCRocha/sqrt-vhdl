@@ -3,7 +3,7 @@ USE ieee.std_logic_1164.all;
 USE ieee.std_logic_unsigned.all;
 use work.multiplier2_pkg.all;
 
-ENTITY bo is
+ENTITY multiplier_bo is
 	generic (n:natural);
 	PORT (clk : IN STD_LOGIC;
 			-- entrada dos sionais de controle
@@ -14,9 +14,9 @@ ENTITY bo is
 			Az, Bz, contz, A0 : OUT STD_LOGIC;
 			--resultado da multiplicaÃ§ao
 			saida : OUT STD_LOGIC_VECTOR((2*n)-1 DOWNTO 0));
-END bo;
+END multiplier_bo;
 
-ARCHITECTURE estrutura OF bo IS
+ARCHITECTURE estrutura OF multiplier_bo IS
 	
 COMPONENT registrador IS
 		generic (n : natural);

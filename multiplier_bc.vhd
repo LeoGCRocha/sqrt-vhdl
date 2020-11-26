@@ -1,7 +1,7 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 
-ENTITY bc IS
+ENTITY multiplier_bc IS
 	PORT (Reset, clk, iniciar : IN STD_LOGIC;
 			--sinal que vem do BC
 			Az, Bz, contz, A0 : IN STD_LOGIC;
@@ -9,7 +9,7 @@ ENTITY bc IS
 			pronto : OUT STD_LOGIC;
 			--sinal de controle do BO
 			mPH, srPH, cPH, srPL, cPL, cB, cmult, mFF, mcont, ccont, srAA, cAA: OUT STD_LOGIC );
-END bc;
+END multiplier_bc;
 
 -- Sinais de comando
 -- ini = RstP = mA = CB  => ini=1 somente em S1
@@ -18,7 +18,7 @@ END bc;
 -- CP=1 somente em S3 (estado no qual ocorre P <= P + B )
 
 
-ARCHITECTURE estrutura OF bc IS
+ARCHITECTURE estrutura OF multiplier_bc IS
 	TYPE state_type IS (S0, S1, S2, S3, S4, S5, S6 );
 	SIGNAL state: state_type;
 BEGIN
