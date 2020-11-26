@@ -1,5 +1,5 @@
 package sqrt_pkg is
-	constant N_BITS : natural := 4;
+	constant n_bits : natural := 4;
 	--constant LOG_N: natural := 8;
 	
 	function Bit_lenght (
