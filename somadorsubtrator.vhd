@@ -6,7 +6,7 @@ ENTITY somadorsubtrator IS
 generic (n:natural);
 PORT (a, b : IN STD_LOGIC_VECTOR(n-1 DOWNTO 0);
       op: IN STD_LOGIC;
-		Cout : OUT STD_LOGIC;
+	Cout : OUT STD_LOGIC;
       s : OUT STD_LOGIC_VECTOR(n-1 DOWNTO 0));
 END somadorsubtrator;
 
