@@ -6,22 +6,22 @@ use work.multiplier2_pkg.all;
 use std.textio.all;
 use ieee.std_logic_textio.all;
 
-entity multiplier2_tb is
+entity sqrt_tb is
     generic (n:natural := N_BITS);
-end multiplier2_tb;
+end entity;
 
 architecture tb of multiplier2_tb is
     signal inicio, reset, clk, pronto : std_logic;
-    signal a, b : std_logic_vector(n-1 downto 0);
-	 signal saida : std_logic_vector((2*n)-1 downto 0);
+    signal a: std_logic_vector(n-1 downto 0);
+    signal saida : std_logic_vector((n-1 downto 0);
 	 
-component multiplier2 is
+component sqrt  is
     generic (n:natural := n_BITS);
-    port(entA, entB   : in std_logic_vector(n-1 downto 0);
-			iniciar, Reset, ck :in std_logic;
-			pronto : out std_logic;
-			mult : out std_logic_vector(n-1 downto 0)
-			);
+    port(clk, iniciar, reset :in std_logic;
+		entrada   : in std_logic_vector(n-1 downto 0);
+		pronto : out std_logic;
+		resultado : out std_logic_vector((n)-1 downto 0)
+		);
 end component;
 
     constant clkp : time := 30 ns;
