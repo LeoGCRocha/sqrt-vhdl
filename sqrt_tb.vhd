@@ -26,13 +26,7 @@ end component;
 
     constant clkp : time := 30 ns;
 begin
-    UUT : entity work.multiplier2 port map ( entA => a, 
-															entB => b, 
-															iniciar => inicio, 
-															Reset => reset, 
-															ck => clk, 
-															pronto => pronto, 
-															mult => saida);
+    UUT : entity work.sqrt port map ( entrada => a, iniciar => inicio, Reset => reset, ck => clk, pronto => pronto, resultado => saida);
 
     reset <= '1', '0' after 10 ns;
 	 
