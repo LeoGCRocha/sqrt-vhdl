@@ -69,11 +69,8 @@ begin
             while not endfile(input_buf) loop
                 readline(input_buf, read_col_from_input_buf);
                 read(read_col_from_input_buf, val_A);
-                read(read_col_from_input_buf, val_SPACE);
-                read(read_col_from_input_buf, val_B);
 
                 a <= val_A;
-                b <= val_B;
 
                 wait for clkp; inicio <= '1';
                 wait for clkp; inicio <= '0';
