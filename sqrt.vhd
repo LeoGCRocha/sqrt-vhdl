@@ -4,12 +4,12 @@ use ieee.numeric_std.all;
 use work.sqrt_pkg.all;
  
 entity sqrt is
-    generic (n:natural := n_bits);
-    port(entA, entB   : in std_logic_vector(n-1 downto 0);
-			iniciar, Reset, ck :in std_logic;
-			pronto : out std_logic;
-			mult : out std_logic_vector((2*n)-1 downto 0)
-			);
+    generic (n:natural := N_BITS);
+    port(clk, iniciar, reset :in std_logic;
+		entrada   : in std_logic_vector(n-1 downto 0);
+		pronto : out std_logic;
+		resultado : out std_logic_vector((n)-1 downto 0)
+		);
 END sqrt;
 
 ARCHITECTURE estrutura OF sqrt IS
