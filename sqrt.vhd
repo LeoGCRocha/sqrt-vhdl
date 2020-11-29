@@ -12,26 +12,27 @@ entity sqrt is
 		);
 END sqrt;
 
-ARCHITECTURE estrutura OF sqrt IS
-
-COMPONENT sqrt_bo is
-	generic (n:natural);
-	PORT ();
-END COMPONENT;
-
-COMPONENT sqrt_bc IS
-	PORT ();
-END COMPONENT;
-
-SIGNAL ;
-
-BEGIN
-
-	bloco_operativo : sqrt_bo 
-		generic map (n => n)
-		port map();
-	
-	bloco_controle : sqrt_bc
-		port map();
-
-END estrutura;
+-- ARCHITECTURE estrutura OF sqrt IS
+-- 
+-- COMPONENT sqrt_bo is
+-- 	generic (n:natural);
+-- 	PORT ();
+-- END COMPONENT;
+-- 
+-- COMPONENT sqrt_bc IS
+-- 	PORT ();
+-- END COMPONENT;
+-- 
+-- SIGNAL ;
+-- 
+-- BEGIN
+-- 
+-- 	bloco_operativo : sqrt_bo 
+-- 		generic map (n => n)
+-- 		port map();
+-- 	
+-- 	bloco_controle : sqrt_bc
+-- 		port map();
+-- 
+-- END estrutura;
+-- 

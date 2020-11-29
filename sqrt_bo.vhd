@@ -7,7 +7,7 @@ entity sqrt_bo is
     port(clk : in                                                               std_logic;
         ini, cStart, cEnd, cMid, cResultado, sub, multiplicar, mResultado : in  std_logic;
         entrada : in                                                            std_logic_vector(n-1 downto 0);
-        multiplicado, less, igual : out                                          std_logic;
+        multiplicado, less, igual : out                                         std_logic;
         saida : out                                                             std_logic_vector(n-1 downto 0));
 end sqrt_bo;
 
@@ -16,7 +16,7 @@ architecture estrutura of sqrt_bo is
 COMPONENT registrador IS
 		generic (n : natural);
 		PORT (clk, carga : IN STD_LOGIC;
-				d : IN STD_LOGIC_VECTOR(n-1 DOWNTO 0);
+                d : IN STD_LOGIC_VECTOR(n-1 DOWNTO 0);
 				q : OUT STD_LOGIC_VECTOR(n-1 DOWNTO 0));
 END COMPONENT;
 
@@ -50,9 +50,9 @@ COMPONENT multiplier2 is
 			);
 END COMPONENT;
 
-signal saidaSTART, saidaMID, saidaEND, saidaX, saidaRESULTADO, saidaSOMASUB, saidaSOMA, saidaMuxSTART, saidaMuxEND, saidaMuxRESULTADO, zero :   std_logic_vector(n-1 downto 0);
-signal saidaMULT, saidaSUB, saidaXDoble :                                                                                                       std_logic_vector(2*n-1 downto 0);
-signal saidaSOMAcout :                                                                                                                          std_logic;
+signal saidaSTART, saidaMID, saidaEND, saidaX, saidaSOMASUB, saidaSOMA, saidaMuxSTART, saidaMuxEND, saidaMuxRESULTADO, zero :   std_logic_vector(n-1 downto 0);
+signal saidaMULT, saidaSUB, saidaXDouble :                                                                                      std_logic_vector(2*n-1 downto 0);
+signal saidaSOMAcout :                                                                                                          std_logic;
 
 begin
     X : registrador
@@ -73,7 +73,7 @@ begin
 
     Resultado : registrador
         generic map (n => n)
-        port map(clk, cResultado, saidaMuxRESULTADO, saidaRESULTADO);
+        port map(clk, cResultado, saidaMuxRESULTADO, saida);
 
     muxStart : mux2para1
         generic map (n => n)
@@ -97,12 +97,12 @@ begin
     
     SUBTRATOR : somadorsubtrator
         generic map (n => 2*n)
-        port map(saidaMULT, saidaXDoble, '1', less, saidaSUB);
+        port map(saidaMULT, saidaXDouble, '1', less, saidaSUB);
     zero <= (others => '0');
-    saidaXDoble <= zero & saidaX;
+    saidaXDouble <= zero & saidaX;
 
     QuadradoIgualAZero : igualazero
         generic map (n => 2*n)
-        port map(saidaMULT, igual);
+        port map(saidaSUB, igual);
 
 end estrutura;
