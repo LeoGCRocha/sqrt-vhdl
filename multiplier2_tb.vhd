@@ -56,8 +56,7 @@ begin
         variable write_col_to_output_buf : line;
         file output_buf : text;
 
-        variable val_A, val_B : std_logic_vector(n-1 downto 0);
-        variable val_SPACE : character;
+        variable val_A: std_logic_vector(n-1 downto 0);
 
         begin
             file_open(input_buf, "D:\Git_Desktop_Files\trabalho-multiplicador\multiplier2\inputs.txt", read_mode);
