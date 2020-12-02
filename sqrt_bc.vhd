@@ -10,7 +10,7 @@ end sqrt_bc;
 
 architecture arch of sqrt_bc is
 
-    type states is (waiting, boot, defineMid, squareMid, squaredMidWithX, squaredMidGreaterX, squaredMidEqualX, squaredMidLesserX, startWithEnd, startGreaterEnd, ready);
+    type states is (waiting, boot, defineMid, initializeSquareMid, squareMid, squaredMidWithX, squaredMidGreaterX, squaredMidEqualX, squaredMidLesserX, startWithEnd, startGreaterEnd, ready);
     signal state, nextState : states;
 
 begin
@@ -36,6 +36,8 @@ begin
             when boot =>
                 nextState <= defineMid;
             when defineMid =>
+                nextState <= initializeSquareMid;
+            when initializeSquareMid =>
                 nextState <= squareMid;
             when squareMid =>
                 if multiplicado = '0' then
@@ -105,7 +107,7 @@ begin
                 mResultado  <= '-';
                 opera1      <= '-';
                 pronto      <= '0';
-            when squareMid =>
+            when initializeSquareMid =>
                 ini         <= '0';
                 cStart      <= '0';
                 cEnd        <= '0';
@@ -113,6 +115,17 @@ begin
                 cResultado  <= '-';
                 sub         <= '-';
                 multiplicar <= '1';
+                mResultado  <= '-';
+                opera1      <= '-';
+                pronto      <= '0';
+            when squareMid =>
+                ini         <= '0';
+                cStart      <= '0';
+                cEnd        <= '0';
+                cMid        <= '0';
+                cResultado  <= '-';
+                sub         <= '-';
+                multiplicar <= '0';
                 mResultado  <= '-';
                 opera1      <= '-';
                 pronto      <= '0';
