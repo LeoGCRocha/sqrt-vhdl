@@ -56,7 +56,7 @@ COMPONENT multiplier2 is
 			);
 END COMPONENT;
 
-signal saidaSTART, saidaMID, saidaEND, saidaX, saidaSOMASUB_StartEnd, saidaSOMASUB_MidX, saidaSOMASUB_StartEndShifted
+signal saidaSTART, saidaMID, saidaEND, saidaX, saidaSOMASUB_StartEnd, saidaSOMASUB_MidX, saidaSOMASUB_StartEndShifted, 
 saidaMuxSTART, saidaMuxEND, saidaMuxRESULTADO, saidaMuxMidX, saidaMuxMidOne, 
 zero :                                                                                      std_logic_vector(n-1 downto 0);
 signal saidaMULT :                                                                          std_logic_vector(2*n-1 downto 0);
@@ -73,7 +73,7 @@ begin
 
     Mid : registrador
         generic map (n => n)
-        port map(clk, cMid, saidaSOMASUB_StartEndShifted, saidaMID); -- É necessário dar o shift na saída da soma antes de inserir nesse registrador, mas deixei assim pra compilar
+        port map(clk, cMid, saidaSOMASUB_StartEndShifted, saidaMID);
 
     End_r : registrador
         generic map (n => n)
