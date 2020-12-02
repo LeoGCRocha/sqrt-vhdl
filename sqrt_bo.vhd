@@ -4,11 +4,11 @@ use ieee.std_logic_unsigned.all;
 
 entity sqrt_bo is
     generic(n : natural := 8);
-    port(clk : in                                                               std_logic;
-        ini, cStart, cEnd, cMid, cResultado, sub, multiplicar, mResultado : in  std_logic;
-        entrada : in                                                            std_logic_vector(n-1 downto 0);
-        multiplicado, less, igual : out                                         std_logic;
-        saida : out                                                             std_logic_vector(n-1 downto 0));
+    port(clk : in                                                                       std_logic;
+        ini, cStart, cEnd, cMid, cResultado, sub, multiplicar, mResultado, opera1 : in  std_logic;
+        entrada : in                                                                    std_logic_vector(n-1 downto 0);
+        multiplicado, startMaiorEnd, midMaiorX, midIgualX : out                         std_logic;
+        saida : out                                                                     std_logic_vector(n-1 downto 0));
 end sqrt_bo;
 
 architecture estrutura of sqrt_bo is
@@ -50,9 +50,11 @@ COMPONENT multiplier2 is
 			);
 END COMPONENT;
 
-signal saidaSTART, saidaMID, saidaEND, saidaX, saidaSOMASUB, saidaSOMA, saidaMuxSTART, saidaMuxEND, saidaMuxRESULTADO, zero :   std_logic_vector(n-1 downto 0);
-signal saidaMULT, saidaSUB, saidaXDouble :                                                                                      std_logic_vector(2*n-1 downto 0);
-signal saidaSOMAcout :                                                                                                          std_logic;
+signal saidaSTART, saidaMID, saidaEND, saidaX, saidaSOMASUB_StartEnd, saidaSOMASUB_MidX, 
+saidaMuxSTART, saidaMuxEND, saidaMuxRESULTADO, saidaMuxMidX, saidaMuxMidOne, 
+zero :                                                                                      std_logic_vector(n-1 downto 0);
+signal saidaMULT :                                                                          std_logic_vector(2*n-1 downto 0);
+signal coutStartEnd, coutMidX :                                                             std_logic;
 
 begin
     X : registrador
@@ -65,7 +67,7 @@ begin
 
     Mid : registrador
         generic map (n => n)
-        port map(clk, cMid, saidaSOMA, saidaMID); -- É necessário dar o shift na saída da soma antes de inserir nesse registrador, mas deixei assim pra compilar
+        port map(clk, cMid, saidaSOMASUB_StartEnd, saidaMID); -- É necessário dar o shift na saída da soma antes de inserir nesse registrador, mas deixei assim pra compilar
 
     End_r : registrador
         generic map (n => n)
@@ -77,32 +79,35 @@ begin
 
     muxStart : mux2para1
         generic map (n => n)
-        port map(saidaSOMASUB, (others => '0'), ini, saidaMuxSTART);
+        port map(saidaSOMASUB_MidX, (others => '0'), ini, saidaMuxSTART);
 
-    muxEND : mux2para1
+    muxEnd : mux2para1
         generic map (n => n)
-        port map(saidaSOMASUB, entrada, ini, saidaMuxEND);
+        port map(saidaSOMASUB_MidX, entrada, ini, saidaMuxEND);
 
-    muxRESULTADO : mux2para1
+    muxMidX : mux2para1
+        generic map (n => n)
+        port map(saidaX, saidaMID, opera1, saidaMuxMidX);
+    
+    muxMidOne : mux2para1
+        generic map (n => n)
+        port map(saidaMULT(2*n-1 downto n), ((0) => '1', others => '0'), opera1, saidaMuxMidOne);
+
+    muxResultado : mux2para1
         generic map (n => n)
         port map(saidaEND, saidaMID, mResultado, saidaMuxRESULTADO);
 
-    SOMA : somadorsubtrator
+    SomaSub_StartEnd : somadorsubtrator
         generic map (n => n)
-        port map(a=>saidaSTART, b=>saidaEND, op=>'0', s=>saidaSOMA); -- cout não é utilizado
-    
-    SOMASUB : somadorsubtrator
-        generic map (n => n)
-        port map(a=>saidaMID, b=>((0) => '1', others => '0'), op=>sub, s=>saidaSOMASUB); -- cout não é utilizado
-    
-    SUBTRATOR : somadorsubtrator
-        generic map (n => 2*n)
-        port map(saidaMULT, saidaXDouble, '1', less, saidaSUB);
-    zero <= (others => '0');
-    saidaXDouble <= zero & saidaX;
+        port map(saidaEND, saidaSTART, sub, coutStartEnd, saidaSOMASUB_StartEnd);
+    startMaiorEnd <= coutStartEnd;
 
-    QuadradoIgualAZero : igualazero
-        generic map (n => 2*n)
-        port map(saidaSUB, igual);
+    SomaSub_MidX : somadorsubtrator
+        generic map (n => n)
+        port map(saidaMuxMidX, saidaMuxMidOne, sub, coutMidX, saidaSOMASUB_MidX);
+    
+    StartIgualX : igualazero
+        generic map (n => n)
+        port map(saidaSOMASUB_MidX, midIgualX);
 
 end estrutura;

@@ -13,7 +13,7 @@ end entity;
 architecture tb of sqrt_tb is
     signal inicio, reset, clk, pronto : std_logic;
     signal a: std_logic_vector(n-1 downto 0);
-    signal saida : std_logic_vector((n-1 downto 0);
+    signal saida : std_logic_vector((n-1 downto 0));
 	 
 component sqrt  is
     generic (n:natural := n_BITS);
