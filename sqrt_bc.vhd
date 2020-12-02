@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 
 entity sqrt_bc is
-    port(clk, reset,
+    port(clk, reset, iniciar,
         multiplicado, startMaiorEnd, midMaiorX, midIgualX : in                              std_logic;
         ini, cStart, cEnd, cMid, cResultado, sub, multiplicar, mResultado, opera1 : out     std_logic);
 end sqrt_bc;
@@ -14,11 +14,61 @@ architecture arch of sqrt_bc is
     signal state, nextState : states;
 
 begin
-    --ChangeOfState : process (clk, reset)
-    --begin
+    ChangeOfState : process (clk, reset)
+    begin
+        if reset = '1' then
+            state <= waiting;
+        elsif rising_edge(clk) then
+            state <= nextState;
 
-    --end process;
+        end if;
+    end process;
 
+    LogicalOfStates : process (state, iniciar, multiplicado, midMaiorX, midIgualX, startMaiorEnd)
+    begin
+        case state is
+            when waiting =>
+                if iniciar = '0' then
+                    nextState <= waiting;
+                else
+                    nextState <= boot;
+                end if;
+            when boot =>
+                nextState <= defineMid;
+            when defineMid =>
+                nextState <= squareMid;
+            when squareMid =>
+                if multiplicado = '0' then
+                    nextState <= squareMid;
+                else
+                    nextState <= squaredMidWithX;
+                end if;
+            when squaredMidWithX =>
+                if midMaiorX = '1' then
+                    nextState <= squaredMidGreaterX;
+                elsif midIgualX = '1' then
+                    nextState <= squaredMidEqualX;
+                else
+                    nextState <= squaredMidLesserX;
+                end if;
+            when squaredMidGreaterX =>
+                nextState <= startWithEnd;
+            when squaredMidEqualX =>
+                nextState <= ready;
+            when squaredMidLesserX =>
+                nextState <= startWithEnd;
+            when startWithEnd =>
+                if startMaiorEnd = '1' then
+                    nextState <= startGreaterEnd;
+                else
+                    nextState <= defineMid;
+                end if;
+            when startGreaterEnd =>
+                nextState <= ready;
+            when others =>
+                nextState <= ready;
+        end case;
+    end process;
     OutputSignals : process (state)
     begin
         case state is
