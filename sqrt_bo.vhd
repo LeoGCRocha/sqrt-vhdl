@@ -4,7 +4,7 @@ use ieee.std_logic_unsigned.all;
 
 entity sqrt_bo is
     generic(n : natural := 8);
-    port(clk : in                                                                       std_logic;
+    port(clk, reset : in                                                                std_logic;
         ini, cStart, cEnd, cMid, cResultado, sub, multiplicar, mResultado, opera1 : in  std_logic;
         entrada : in                                                                    std_logic_vector(n-1 downto 0);
         multiplicado, startMaiorEnd, midMaiorX, midIgualX : out                         std_logic;
@@ -37,8 +37,14 @@ END COMPONENT;
 	
 COMPONENT igualazero IS
 	generic (n : natural);
-	PORT (a : IN STD_LOGIC_VECTOR(n-1 DOWNTO 0);
+	PORT (  a :     IN STD_LOGIC_VECTOR(n-1 DOWNTO 0);
 			igual : OUT STD_LOGIC);
+END COMPONENT;
+
+COMPONENT diferentezero IS
+generic (n:natural);
+PORT (  a : 		IN STD_LOGIC_VECTOR(n-1 DOWNTO 0);
+        diferente : OUT STD_LOGIC);
 END COMPONENT;
 
 COMPONENT multiplier2 is
@@ -50,11 +56,11 @@ COMPONENT multiplier2 is
 			);
 END COMPONENT;
 
-signal saidaSTART, saidaMID, saidaEND, saidaX, saidaSOMASUB_StartEnd, saidaSOMASUB_MidX, 
+signal saidaSTART, saidaMID, saidaEND, saidaX, saidaSOMASUB_StartEnd, saidaSOMASUB_MidX, saidaSOMASUB_StartEndShifted
 saidaMuxSTART, saidaMuxEND, saidaMuxRESULTADO, saidaMuxMidX, saidaMuxMidOne, 
 zero :                                                                                      std_logic_vector(n-1 downto 0);
 signal saidaMULT :                                                                          std_logic_vector(2*n-1 downto 0);
-signal coutStartEnd, coutMidX :                                                             std_logic;
+signal coutStartEnd, coutMidX, midMaiorXPorBits :                                           std_logic;
 
 begin
     X : registrador
@@ -67,7 +73,7 @@ begin
 
     Mid : registrador
         generic map (n => n)
-        port map(clk, cMid, saidaSOMASUB_StartEnd, saidaMID); -- É necessário dar o shift na saída da soma antes de inserir nesse registrador, mas deixei assim pra compilar
+        port map(clk, cMid, saidaSOMASUB_StartEndShifted, saidaMID); -- É necessário dar o shift na saída da soma antes de inserir nesse registrador, mas deixei assim pra compilar
 
     End_r : registrador
         generic map (n => n)
@@ -91,7 +97,7 @@ begin
     
     muxMidOne : mux2para1
         generic map (n => n)
-        port map(saidaMULT(2*n-1 downto n), ((0) => '1', others => '0'), opera1, saidaMuxMidOne);
+        port map(saidaMULT(n-1 downto 0), ((0) => '1', others => '0'), opera1, saidaMuxMidOne);
 
     muxResultado : mux2para1
         generic map (n => n)
@@ -100,6 +106,7 @@ begin
     SomaSub_StartEnd : somadorsubtrator
         generic map (n => n)
         port map(saidaEND, saidaSTART, sub, coutStartEnd, saidaSOMASUB_StartEnd);
+    saidaSOMASUB_StartEndShifted <= coutStartEnd & saidaSOMASUB_StartEnd(n-1 downto 1);
     startMaiorEnd <= coutStartEnd;
 
     SomaSub_MidX : somadorsubtrator
@@ -109,5 +116,15 @@ begin
     StartIgualX : igualazero
         generic map (n => n)
         port map(saidaSOMASUB_MidX, midIgualX);
+    
+    Multiplier : multiplier2
+        generic map (n => n)
+        port map(saidaMID, saidaMID, multiplicar, reset, clk, multiplicado, saidaMULT);
+    
+    MidGreaterThanNBits : diferentezero
+        generic map (n => n)
+        port map(saidaMULT(2*n-1 downto n), midMaiorXPorBits);
+    
+    midMaiorX <= coutMidX or midMaiorXPorBits;
 
 end estrutura;
