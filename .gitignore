@@ -13,3 +13,5 @@ simulation/modelsim/*
 
 *.qsf
 *.qws
+
+sqrt_tb.vhd
