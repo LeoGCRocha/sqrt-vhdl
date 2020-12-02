@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 
 entity sqrt_bo is
-    generic(n : natural := 8);
+    generic(n : natural);
     port(clk, reset,
         ini, cStart, cEnd, cMid, cResultado, sub, multiplicar, mResultado, opera1 : in  std_logic;
         entrada : in                                                                    std_logic_vector(n-1 downto 0);

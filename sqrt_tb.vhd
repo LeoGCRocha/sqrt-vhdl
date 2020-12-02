@@ -2,7 +2,7 @@ library ieee;
 library work;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use work.multiplier2_pkg.all;
+use work.sqrt_pkg.all;
 use std.textio.all;
 use ieee.std_logic_textio.all;
 
@@ -16,19 +16,19 @@ architecture tb of sqrt_tb is
     signal saida : std_logic_vector(n-1 downto 0);
 	 
 component sqrt  is
-    generic (n:natural := n_BITS);
+    generic (n:natural := n);
     port(clk, iniciar, reset :in std_logic;
 		entrada   : in std_logic_vector(n-1 downto 0);
 		pronto : out std_logic;
-		resultado : out std_logic_vector((n)-1 downto 0)
+		resultado : out std_logic_vector(n-1 downto 0)
 		);
 end component;
 
     constant clkp : time := 30 ns;
 begin
-    UUT : entity work.sqrt port map ( entrada => a, iniciar => inicio, Reset => reset, clk => clk, pronto => pronto, resultado => saida);
+    UUT : entity work.sqrt port map (entrada => a, iniciar => inicio, reset => reset, clk => clk, pronto => pronto, resultado => saida);
 
-    reset <= '1', '0' after 10 ns;
+    -- reset <= '1', '0' after 10 ns;
 	 
     clk_simulation : process
     begin
@@ -53,13 +53,15 @@ begin
         variable val_A: std_logic_vector(n-1 downto 0);
 
         begin
-            file_open(input_buf, "D:\Git_Desktop_Files\trabalho-multiplicador\multiplier2\inputs.txt", read_mode);
-            file_open(output_buf, "D:\Git_Desktop_Files\trabalho-multiplicador\multiplier2\outputs_testbench.txt", write_mode);
+            file_open(input_buf, "/home/kuru/UFSC/SD/QuartusProjects/sqrt-vhdl/inputs.txt", read_mode);
+            file_open(output_buf, "/home/kuru/UFSC/SD/QuartusProjects/sqrt-vhdl/outputs_testbench.txt", write_mode);
 				
 				
-            wait until reset = '0';				
+            -- wait until reset = '0';				
 				
             while not endfile(input_buf) loop
+                reset <= '1'; 
+                wait for clkp/2; reset <= '0';
                 readline(input_buf, read_col_from_input_buf);
                 read(read_col_from_input_buf, val_A);
 

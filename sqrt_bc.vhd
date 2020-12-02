@@ -4,8 +4,8 @@ use ieee.std_logic_unsigned.all;
 
 entity sqrt_bc is
     port(clk, reset, iniciar,
-        multiplicado, startMaiorEnd, midMaiorX, midIgualX : in                              std_logic;
-        ini, cStart, cEnd, cMid, cResultado, sub, multiplicar, mResultado, opera1 : out     std_logic);
+        multiplicado, startMaiorEnd, midMaiorX, midIgualX : in                                  std_logic;
+        ini, cStart, cEnd, cMid, cResultado, sub, multiplicar, mResultado, opera1, pronto : out std_logic);
 end sqrt_bc;
 
 architecture arch of sqrt_bc is
@@ -79,9 +79,10 @@ begin
                 cMid        <= '-';
                 cResultado  <= '-';
                 sub         <= '-';
-                multiplicar <= '-';
+                multiplicar <= '0';
                 mResultado  <= '-';
                 opera1      <= '-';
+                pronto      <= '0';
             when boot =>
                 ini         <= '1';
                 cStart      <= '1';
@@ -89,21 +90,23 @@ begin
                 cMid        <= '-';
                 cResultado  <= '-';
                 sub         <= '-';
-                multiplicar <= '-';
+                multiplicar <= '0';
                 mResultado  <= '-';
                 opera1      <= '-';
+                pronto      <= '0';
             when defineMid =>
-                ini         <= '-';
+                ini         <= '0';
                 cStart      <= '0';
                 cEnd        <= '0';
                 cMid        <= '1';
                 cResultado  <= '-';
                 sub         <= '0';
-                multiplicar <= '-';
+                multiplicar <= '0';
                 mResultado  <= '-';
                 opera1      <= '-';
+                pronto      <= '0';
             when squareMid =>
-                ini         <= '-';
+                ini         <= '0';
                 cStart      <= '0';
                 cEnd        <= '0';
                 cMid        <= '0';
@@ -112,8 +115,9 @@ begin
                 multiplicar <= '1';
                 mResultado  <= '-';
                 opera1      <= '-';
+                pronto      <= '0';
             when squaredMidWithX =>
-                ini         <= '-';
+                ini         <= '0';
                 cStart      <= '0';
                 cEnd        <= '0';
                 cMid        <= '0';
@@ -122,16 +126,18 @@ begin
                 multiplicar <= '0';
                 mResultado  <= '-';
                 opera1      <= '0';
+                pronto      <= '0';
             when squaredMidGreaterX =>
-                ini         <= '-';
+                ini         <= '0';
                 cStart      <= '0';
                 cEnd        <= '1';
                 cMid        <= '0';
                 cResultado  <= '-';
                 sub         <= '1';
-                multiplicar <= '-';
+                multiplicar <= '0';
                 mResultado  <= '-';
                 opera1      <= '1';
+                pronto      <= '0';
             when squaredMidEqualX =>
                 ini         <= '-';
                 cStart      <= '-';
@@ -142,26 +148,29 @@ begin
                 multiplicar <= '-';
                 mResultado  <= '1';
                 opera1      <= '-';
+                pronto      <= '0';
             when squaredMidLesserX =>
-                ini         <= '-';
+                ini         <= '0';
                 cStart      <= '1';
                 cEnd        <= '0';
                 cMid        <= '0';
                 cResultado  <= '-';
                 sub         <= '0';
-                multiplicar <= '-';
+                multiplicar <= '0';
                 mResultado  <= '-';
                 opera1      <= '1';
+                pronto      <= '0';
             when startWithEnd =>
-                ini         <= '-';
+                ini         <= '0';
                 cStart      <= '0';
                 cEnd        <= '0';
                 cMid        <= '0';
                 cResultado  <= '-';
                 sub         <= '1';
-                multiplicar <= '-';
+                multiplicar <= '0';
                 mResultado  <= '-';
                 opera1      <= '-';
+                pronto      <= '0';
             when startGreaterEnd =>
                 ini         <= '-';
                 cStart      <= '-';
@@ -172,6 +181,7 @@ begin
                 multiplicar <= '-';
                 mResultado  <= '0';
                 opera1      <= '-';
+                pronto      <= '0';
             when others =>
                 ini         <= '-';
                 cStart      <= '-';
@@ -182,6 +192,7 @@ begin
                 multiplicar <= '-';
                 mResultado  <= '-';
                 opera1      <= '-';
+                pronto      <= '1';
         end case;
     end process;
 end arch;

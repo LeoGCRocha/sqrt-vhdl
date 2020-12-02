@@ -6,7 +6,7 @@ def int2unsigned(a, length):    # Não é utilizado bits com sinal nesse projeto
     b = BitArray(int=a, length = length)
     return b.bin[1:]
 
-N_BITS = 16 # Bits de entrada,
+N_BITS = 8 # Bits de entrada,
 # deve ser o mesmo valor da constante de mesmo nome em multiplier.pkg
 
 input_f = open("inputs.txt","w")

@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 use work.multiplier2_pkg.all;
  
 entity multiplier2 is
-    generic (n:natural := N_BITS);
+    generic (n:natural);
     port(entA, entB   : in std_logic_vector(n-1 downto 0);
 			iniciar, Reset, ck :in std_logic;
 			pronto : out std_logic;
