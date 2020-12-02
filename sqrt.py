@@ -1,5 +1,5 @@
 from bitstring import BitArray
-import itertools
+import math
 
 def int2unsigned(a, length):    # Não é utilizado bits com sinal nesse projeto
     length = length + 1
@@ -11,17 +11,15 @@ N_BITS = 8 # Bits de entrada,
 
 input_f = open("inputs.txt","w")
 output_f = open("outputs_ref.txt","w")
-testes_a = range(0, 2**(N_BITS//2))
-testes_b = range(0, 2**(N_BITS//2))
+testes_a = range(0, 2**(N_BITS))
 
-for a,b in itertools.product(testes_a, testes_b):
-    res = int(b * (0.5))
+for a in testes_a:
+    res = int(math.sqrt(a))
 
     bin_a = int2unsigned(a, N_BITS)
-    bin_b = int2unsigned(b, N_BITS)
     bin_res = int2unsigned(res, N_BITS)
-    
-    print(f'{bin_b}', file = input_f)
+
+    print(f'{bin_a}', file = input_f)
     print(bin_res, file = output_f)
 
 input_f.close()
