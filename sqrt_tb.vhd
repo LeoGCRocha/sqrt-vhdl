@@ -25,7 +25,7 @@ component sqrt  is
 		);
 end component;
 
-    constant clkp : time := 30 ns;
+    constant clkp : time := 5 ns;
 begin
     UUT : entity work.sqrt port map (entrada => a, iniciar => inicio, reset => reset, clk => clk, pronto => pronto, resultado => saida);
 
@@ -57,9 +57,9 @@ begin
         variable write_col_to_output_cycles_buf : line;
         file output_cycles_buf : text;
         begin
-            file_open(input_buf, "/home/kuru/UFSC/SD/QuartusProjects/sqrt-vhdl/inputs.txt", read_mode);
-            file_open(output_buf, "/home/kuru/UFSC/SD/QuartusProjects/sqrt-vhdl/outputs_testbench.txt", write_mode);
-            file_open(output_cycles_buf, "/home/kuru/UFSC/SD/QuartusProjects/sqrt-vhdl/outputs_cycles.txt", write_mode);
+            file_open(input_buf, "D:/Git_Desktop_Files/sqrt-vhdl/inputs.txt", read_mode);
+            file_open(output_buf, "D:/Git_Desktop_Files/sqrt-vhdl/outputs_testbench.txt", write_mode);
+            file_open(output_cycles_buf, "D:/Git_Desktop_Files/sqrt-vhdl/outputs_cycles.txt", write_mode);
 				
             -- wait until reset = '0';				
 				
